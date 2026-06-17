@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Coach | MindLog</title>
+  <meta name="description" content="Your AI coach surfaces patterns and reflects real growth back to you — especially on days when progress feels invisible."/>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=snap" rel="stylesheet"/>
+  <!-- Shared Styles -->
+  <link rel="stylesheet" href="style.css"/>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary": "#ffffff", "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#454747", "on-secondary-container": "#606161",
+            "deep-forest": "#2C362D", "surface-container-highest": "#e4e2e2",
+            "outline": "#747878", "inverse-primary": "#c8c6c5",
+            "on-error": "#ffffff", "inverse-surface": "#303031",
+            "surface-container-low": "#f5f3f3", "mist-gray": "#F2F2F2",
+            "secondary": "#5d5f5f", "surface-container": "#efeded",
+            "background": "#fbf9f9", "inverse-on-surface": "#f2f0f0",
+            "on-secondary-fixed": "#1a1c1c", "on-primary": "#ffffff",
+            "on-surface-variant": "#444748", "primary-fixed-dim": "#c8c6c5",
+            "surface-dim": "#dbdad9", "error": "#ba1a1a",
+            "secondary-fixed-dim": "#c6c6c6", "surface": "#fbf9f9",
+            "on-primary-container": "#858383", "tertiary-fixed-dim": "#c6c7c5",
+            "on-primary-fixed-variant": "#474746", "on-background": "#1b1c1c",
+            "on-primary-fixed": "#1c1b1b", "surface-tint": "#5f5e5e",
+            "tertiary-container": "#1a1c1b", "error-container": "#ffdad6",
+            "paper-white": "#FFFFFF", "outline-variant": "#c4c7c7",
+            "on-tertiary-fixed-variant": "#454746", "on-tertiary-container": "#838483",
+            "on-tertiary-fixed": "#1a1c1b", "surface-container-high": "#e9e8e7",
+            "surface-variant": "#e4e2e2", "primary-container": "#1c1b1b",
+            "on-error-container": "#93000a", "on-surface": "#1b1c1c",
+            "primary-fixed": "#e5e2e1", "tertiary-fixed": "#e2e3e1",
+            "tertiary": "#000000", "ink-black": "#000000",
+            "surface-container-lowest": "#ffffff", "secondary-fixed": "#e2e2e2",
+            "surface-bright": "#fbf9f9", "secondary-container": "#dddddd",
+            "primary": "#000000"
+          },
+          borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+          spacing: {
+            "unit": "4px", "margin-desktop": "64px", "stack-sm": "12px",
+            "container-max": "1200px", "stack-md": "24px", "stack-lg": "48px",
+            "gutter": "24px", "margin-mobile": "20px"
+          },
+          fontFamily: {
+            "body-lg": ["Hanken Grotesk"], "display-lg": ["EB Garamond"],
+            "body-md": ["Hanken Grotesk"], "headline-md": ["EB Garamond"],
+            "label-md": ["Hanken Grotesk"], "label-sm": ["Hanken Grotesk"],
+            "display-lg-mobile": ["EB Garamond"], "headline-sm": ["EB Garamond"]
+          },
+          fontSize: {
+            "body-lg":          ["18px", { lineHeight: "28px", fontWeight: "400" }],
+            "display-lg":       ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "500" }],
+            "body-md":          ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            "headline-md":      ["32px", { lineHeight: "40px", fontWeight: "500" }],
+            "label-md":         ["14px", { lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600" }],
+            "label-sm":         ["12px", { lineHeight: "16px", fontWeight: "500" }],
+            "display-lg-mobile":["36px", { lineHeight: "44px", letterSpacing: "-0.01em", fontWeight: "500" }],
+            "headline-sm":      ["24px", { lineHeight: "32px", fontWeight: "500" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-background text-on-background min-h-screen font-body-md flex flex-col">
+
+  <!-- ══════════════════════════════════════════
+       TOP APP BAR
+  ══════════════════════════════════════════ -->
+  <header class="w-full top-0 sticky z-40 bg-background border-b border-outline-variant/40">
+    <div class="flex justify-between items-center px-margin-mobile py-4 w-full max-w-container-max mx-auto">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant flex-shrink-0">
+          <img
+            alt="User profile"
+            class="w-full h-full object-cover"
+            src="https://api.dicebear.com/8.x/avataaars/svg?seed=mindlog&backgroundColor=b6e3f4"
+            onerror="this.style.display='none'"
+          />
+        </div>
+        <div>
+          <p class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Your Guide</p>
+          <h1 class="font-headline-sm text-headline-sm text-ink-black">AI Coach</h1>
+        </div>
+      </div>
+      <button class="text-secondary hover:text-ink-black transition-colors p-2 rounded-lg hover:bg-mist-gray" aria-label="Settings">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════ -->
+  <main class="w-full max-w-container-max mx-auto px-margin-mobile pt-stack-md pb-32 flex flex-col gap-stack-lg flex-grow">
+
+    <!-- ── Latest Insight Hero ── -->
+    <section class="fade-in" style="animation-delay:0s" aria-label="Latest coach insight">
+      <div class="flex flex-col gap-2 mb-4">
+        <span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Latest Insight</span>
+        <h2 class="font-headline-sm text-headline-sm text-ink-black" id="latest-insight-headline">
+          Your Coach is Ready
+        </h2>
+      </div>
+
+      <!-- Latest insight card — empty state -->
+      <div id="latest-insight-empty" class="bg-paper-white border border-outline-variant rounded-xl p-8 text-center">
+        <span class="material-symbols-outlined text-[48px] text-outline-variant block mb-4" style="font-variation-settings:'FILL' 0;">psychology</span>
+        <p class="font-body-lg text-body-lg text-secondary italic leading-relaxed">
+          "Log your first check-in and I'll reflect back exactly what I see in your data."
+        </p>
+        <a href="log.html" class="mt-6 inline-block bg-ink-black text-paper-white px-6 py-3 rounded-full font-label-md text-label-md uppercase tracking-widest hover:opacity-90 transition-opacity">
+          Make Your First Log
+        </a>
+      </div>
+
+      <!-- Latest insight card — populated -->
+      <div id="latest-insight-card" class="hidden bg-paper-white border border-outline-variant rounded-xl p-8 relative overflow-hidden">
+        <!-- AI label pill -->
+        <div class="absolute -top-3 left-6 bg-ink-black text-paper-white px-3 py-1 rounded-full flex items-center gap-2 ai-badge">
+          <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">psychology</span>
+          <span class="text-[10px] font-bold tracking-tight">AI COACH</span>
+        </div>
+        <!-- Meta info -->
+        <div class="flex items-center gap-3 mt-2 mb-4">
+          <span id="latest-mode-icon" class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1;">verified</span>
+          <span id="latest-date" class="font-label-sm text-label-sm text-secondary"></span>
+          <span class="text-outline-variant">·</span>
+          <span id="latest-scores" class="font-label-sm text-label-sm text-secondary"></span>
+        </div>
+        <!-- Coach response text -->
+        <blockquote id="latest-coach-text" class="font-body-lg text-body-lg text-on-surface leading-relaxed italic border-l-2 border-outline-variant pl-4 mb-4">
+        </blockquote>
+        <!-- User's note -->
+        <div id="latest-note-row" class="hidden border-t border-outline-variant pt-4 mt-2">
+          <p class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-1">Your reflection</p>
+          <p id="latest-note-text" class="font-body-md text-body-md text-on-surface-variant"></p>
+        </div>
+        <!-- Tags -->
+        <div id="latest-tags" class="flex flex-wrap gap-2 mt-4"></div>
+        <!-- Log again CTA -->
+        <div class="mt-6 pt-4 border-t border-outline-variant">
+          <a href="log.html" class="text-label-sm font-label-sm text-secondary hover:text-ink-black transition-colors underline decoration-outline-variant">
+            Log today's check-in →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Previous Insights ── -->
+    <section class="fade-in" style="animation-delay:0.12s" aria-label="Insight history">
+      <div class="flex justify-between items-end border-b border-outline-variant pb-3 mb-0">
+        <h3 class="font-headline-sm text-headline-sm text-ink-black">Previous Insights</h3>
+        <span id="entry-count-label" class="font-label-sm text-label-sm text-secondary"></span>
+      </div>
+
+      <!-- History list -->
+      <div id="history-list" role="list">
+        <!-- Populated by coach.js -->
+      </div>
+
+      <!-- Empty history state -->
+      <div id="history-empty" class="hidden empty-state py-10">
+        <span class="material-symbols-outlined text-[36px] text-outline-variant block mx-auto mb-3">history</span>
+        <p class="text-secondary font-body-md">Your insight history will build with each log entry.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════
+       BOTTOM NAV BAR
+  ══════════════════════════════════════════ -->
+  <nav class="fixed bottom-0 w-full z-50 border-t border-outline-variant bg-paper-white" aria-label="Main navigation">
+    <div class="flex justify-around items-center px-4 py-2 max-w-container-max mx-auto">
+      <a id="nav-home" href="index.html" class="nav-item" aria-label="Home">
+        <span class="material-symbols-outlined">home</span>
+        <span class="font-label-md text-label-md">Home</span>
+      </a>
+      <a id="nav-log" href="log.html" class="nav-item" aria-label="Log">
+        <span class="material-symbols-outlined">add_circle</span>
+        <span class="font-label-md text-label-md">Log</span>
+      </a>
+      <a id="nav-coach" href="coach.html" class="nav-item active" aria-label="Coach">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">psychology</span>
+        <span class="font-label-md text-label-md">Coach</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+  <script src="coach.js"></script>
+</body>
+</html>
