@@ -9,9 +9,8 @@
 //  CONFIG — Drop your Groq API key here when ready
 // ──────────────────────────────────────────────────────────────
 const MINDLOG_CONFIG = {
-  GROQ_API_KEY: '',          // TODO: paste your Groq API key here
-  GROQ_MODEL:   'llama3-8b-8192',
-  GROQ_API_URL: 'https://api.groq.com/openai/v1/chat/completions',
+  GROQ_MODEL:   'llama-3.3-70b-versatile',
+  WORKER_URL:   'https://raspy-leaf-d3bf.vedivinod2006.workers.dev/', // replaces GROQ_API_URL
   STORAGE_KEY:  'mindlog_entries',
 };
 
@@ -142,20 +141,14 @@ function buildCoachPrompt(entry, history) {
  * @returns {Promise<string>}
  */
 async function callGroqCoach(entry, history) {
-  // ── PLACEHOLDER MODE (no API key) ────────────────────────────
-  if (!MINDLOG_CONFIG.GROQ_API_KEY) {
-    return getPlaceholderResponse(entry, history);
-  }
-
-  // ── LIVE GROQ API CALL ────────────────────────────────────────
-  const systemPrompt = `You are a direct, honest AI mental health coach. Your role is to help users see patterns in their own emotional data that they cannot see themselves. You do NOT give generic wellness advice. You reference specific data from this user's log history. You speak in plain, warm language — not clinical, not fluffy. You are honest even when the truth is uncomfortable, but always with care. Your response is 3–4 sentences maximum.`;
+  // ── LIVE CALL VIA WORKER (key lives server-side, not here) ───
+  const systemPrompt = `You are a direct, honest AI mental health coach. Your role is to help users see patterns in their own emotional data that they cannot see themselves. You do NOT give generic wellness advice. You reference specific data from this user's log history but dont say it directly or obviously to the user. you just keep it in your mind while typing out the response. You speak in plain, warm language — not clinical, not fluffy. You are honest even when the truth is uncomfortable, but always with care. Your response is a few words maximum and should always be valid to their context. Be sharp and specific.You write statements. You dont ask the user anything`;
 
   try {
-    const res = await fetch(MINDLOG_CONFIG.GROQ_API_URL, {
+    const res = await fetch(MINDLOG_CONFIG.WORKER_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${MINDLOG_CONFIG.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
         model: MINDLOG_CONFIG.GROQ_MODEL,
@@ -168,14 +161,61 @@ async function callGroqCoach(entry, history) {
       }),
     });
 
-    if (!res.ok) throw new Error(`Groq API error: ${res.status}`);
+    if (!res.ok) throw new Error(`Worker error: ${res.status}`);
     const data = await res.json();
     return data.choices?.[0]?.message?.content?.trim() || getPlaceholderResponse(entry, history);
   } catch (err) {
     console.error('[MindLog] Groq API call failed:', err);
     return getPlaceholderResponse(entry, history);
   }
+}/**
+ * Welcome to Cloudflare Workers! This is your first worker.
+ *
+ * - Run "npm run dev" in your terminal to start a development server
+ * - Open a browser tab at http://localhost:8787/ to see your worker in action
+ * - Run "npm run deploy" to publish your worker
+ *
+ * Learn more at https://developers.cloudflare.com/workers/
+ */
+export default {
+  async fetch(request, env) {
+    // Allow requests only from your GitHub Pages site
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "https://vedika-v792.github.io",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    };
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    let body;
+try {
+  body = await request.json();
+} catch (err) {
+  return new Response(JSON.stringify({ error: " missing JSON body" }), {
+    status: 400,
+    headers: { "Content-Type": "application/json" },
+  });
 }
+
+    const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.GROQ_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await groqResponse.json();
+
+    return new Response(JSON.stringify(data), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  },
+};
 
 /**
  * Returns a context-aware placeholder coach response based on mode + scores.

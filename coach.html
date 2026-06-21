@@ -100,86 +100,177 @@
         <span class="material-symbols-outlined">settings</span>
       </button>
     </div>
+
+    <!-- ── Tab Switcher ── -->
+    <div class="flex px-margin-mobile max-w-container-max mx-auto" style="gap: 8px;" role="tablist" aria-label="Coach sections">
+      <button
+        id="tab-insights"
+        class="coach-tab active-tab"
+        role="tab" aria-selected="true" aria-controls="panel-insights"
+        onclick="switchTab('insights')"
+      >Insights</button>
+      <button
+        id="tab-chat"
+        class="coach-tab"
+        role="tab" aria-selected="false" aria-controls="panel-chat"
+        onclick="switchTab('chat')"
+      >
+        <span class="material-symbols-outlined text-[14px] align-middle mr-1" style="font-variation-settings:'FILL' 1;">chat</span>
+        Chat
+      </button>
+    </div>
   </header>
+
 
   <!-- ══════════════════════════════════════════
        MAIN CONTENT
   ══════════════════════════════════════════ -->
-  <main class="w-full max-w-container-max mx-auto px-margin-mobile pt-stack-md pb-32 flex flex-col gap-stack-lg flex-grow">
+  <main class="w-full max-w-container-max mx-auto flex flex-col flex-grow" style="min-height:0">
 
-    <!-- ── Latest Insight Hero ── -->
-    <section class="fade-in" style="animation-delay:0s" aria-label="Latest coach insight">
-      <div class="flex flex-col gap-2 mb-4">
-        <span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Latest Insight</span>
-        <h2 class="font-headline-sm text-headline-sm text-ink-black" id="latest-insight-headline">
-          Your Coach is Ready
-        </h2>
-      </div>
+    <!-- ══════════════════════════════════════════
+         PANEL: INSIGHTS
+    ══════════════════════════════════════════ -->
+    <div id="panel-insights" role="tabpanel" aria-labelledby="tab-insights"
+         class="px-margin-mobile pt-stack-md pb-32 flex flex-col gap-stack-lg">
 
-      <!-- Latest insight card — empty state -->
-      <div id="latest-insight-empty" class="bg-paper-white border border-outline-variant rounded-xl p-8 text-center">
-        <span class="material-symbols-outlined text-[48px] text-outline-variant block mb-4" style="font-variation-settings:'FILL' 0;">psychology</span>
-        <p class="font-body-lg text-body-lg text-secondary italic leading-relaxed">
-          "Log your first check-in and I'll reflect back exactly what I see in your data."
-        </p>
-        <a href="log.html" class="mt-6 inline-block bg-ink-black text-paper-white px-6 py-3 rounded-full font-label-md text-label-md uppercase tracking-widest hover:opacity-90 transition-opacity">
-          Make Your First Log
-        </a>
-      </div>
+      <!-- ── Latest Insight Hero ── -->
+      <section class="fade-in" style="animation-delay:0s" aria-label="Latest coach insight">
+        <div class="flex flex-col gap-2 mb-4">
+          <span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Latest Insight</span>
+          <h2 class="font-headline-sm text-headline-sm text-ink-black" id="latest-insight-headline">
+            Your Coach is Ready
+          </h2>
+        </div>
 
-      <!-- Latest insight card — populated -->
-      <div id="latest-insight-card" class="hidden bg-paper-white border border-outline-variant rounded-xl p-8 relative overflow-hidden">
-        <!-- AI label pill -->
-        <div class="absolute -top-3 left-6 bg-ink-black text-paper-white px-3 py-1 rounded-full flex items-center gap-2 ai-badge">
-          <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">psychology</span>
-          <span class="text-[10px] font-bold tracking-tight">AI COACH</span>
-        </div>
-        <!-- Meta info -->
-        <div class="flex items-center gap-3 mt-2 mb-4">
-          <span id="latest-mode-icon" class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1;">verified</span>
-          <span id="latest-date" class="font-label-sm text-label-sm text-secondary"></span>
-          <span class="text-outline-variant">·</span>
-          <span id="latest-scores" class="font-label-sm text-label-sm text-secondary"></span>
-        </div>
-        <!-- Coach response text -->
-        <blockquote id="latest-coach-text" class="font-body-lg text-body-lg text-on-surface leading-relaxed italic border-l-2 border-outline-variant pl-4 mb-4">
-        </blockquote>
-        <!-- User's note -->
-        <div id="latest-note-row" class="hidden border-t border-outline-variant pt-4 mt-2">
-          <p class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-1">Your reflection</p>
-          <p id="latest-note-text" class="font-body-md text-body-md text-on-surface-variant"></p>
-        </div>
-        <!-- Tags -->
-        <div id="latest-tags" class="flex flex-wrap gap-2 mt-4"></div>
-        <!-- Log again CTA -->
-        <div class="mt-6 pt-4 border-t border-outline-variant">
-          <a href="log.html" class="text-label-sm font-label-sm text-secondary hover:text-ink-black transition-colors underline decoration-outline-variant">
-            Log today's check-in →
+        <!-- empty state -->
+        <div id="latest-insight-empty" class="bg-paper-white border border-outline-variant rounded-xl p-8 text-center">
+          <span class="material-symbols-outlined text-[48px] text-outline-variant block mb-4" style="font-variation-settings:'FILL' 0;">psychology</span>
+          <p class="font-body-lg text-body-lg text-secondary italic leading-relaxed">
+            "Log your first check-in and I'll reflect back exactly what I see in your data."
+          </p>
+          <a href="log.html" class="mt-6 inline-block bg-ink-black text-paper-white px-6 py-3 rounded-full font-label-md text-label-md uppercase tracking-widest hover:opacity-90 transition-opacity">
+            Make Your First Log
           </a>
         </div>
-      </div>
-    </section>
 
-    <!-- ── Previous Insights ── -->
-    <section class="fade-in" style="animation-delay:0.12s" aria-label="Insight history">
-      <div class="flex justify-between items-end border-b border-outline-variant pb-3 mb-0">
-        <h3 class="font-headline-sm text-headline-sm text-ink-black">Previous Insights</h3>
-        <span id="entry-count-label" class="font-label-sm text-label-sm text-secondary"></span>
+        <!-- populated state -->
+        <div id="latest-insight-card" class="hidden bg-paper-white border border-outline-variant rounded-xl p-8 relative overflow-hidden">
+          <div class="absolute -top-3 left-6 bg-ink-black text-paper-white px-3 py-1 rounded-full flex items-center gap-2 ai-badge">
+            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1;">psychology</span>
+            <span class="text-[10px] font-bold tracking-tight">AI COACH</span>
+          </div>
+          <div class="flex items-center gap-3 mt-2 mb-4">
+            <span id="latest-mode-icon" class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1;">verified</span>
+            <span id="latest-date" class="font-label-sm text-label-sm text-secondary"></span>
+            <span class="text-outline-variant">·</span>
+            <span id="latest-scores" class="font-label-sm text-label-sm text-secondary"></span>
+          </div>
+          <blockquote id="latest-coach-text" class="font-body-lg text-body-lg text-on-surface leading-relaxed italic border-l-2 border-outline-variant pl-4 mb-4"></blockquote>
+          <div id="latest-note-row" class="hidden border-t border-outline-variant pt-4 mt-2">
+            <p class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mb-1">Your reflection</p>
+            <p id="latest-note-text" class="font-body-md text-body-md text-on-surface-variant"></p>
+          </div>
+          <div id="latest-tags" class="flex flex-wrap gap-2 mt-4"></div>
+          <div class="mt-6 pt-4 border-t border-outline-variant flex items-center justify-between">
+            <a href="log.html" class="text-label-sm font-label-sm text-secondary hover:text-ink-black transition-colors underline decoration-outline-variant">
+              Log today's check-in →
+            </a>
+            <button onclick="switchTab('chat')" class="text-label-sm font-label-sm text-secondary hover:text-ink-black transition-colors flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">chat</span>
+              Talk to Coach
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Previous Insights ── -->
+      <section class="fade-in" style="animation-delay:0.12s" aria-label="Insight history">
+        <div class="flex justify-between items-end border-b border-outline-variant pb-3 mb-0">
+          <h3 class="font-headline-sm text-headline-sm text-ink-black">Previous Insights</h3>
+          <span id="entry-count-label" class="font-label-sm text-label-sm text-secondary"></span>
+        </div>
+        <div id="history-list" role="list"></div>
+        <div id="history-empty" class="hidden empty-state py-10">
+          <span class="material-symbols-outlined text-[36px] text-outline-variant block mx-auto mb-3">history</span>
+          <p class="text-secondary font-body-md">Your insight history will build with each log entry.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PANEL: CHAT
+    ══════════════════════════════════════════ -->
+    <div id="panel-chat" role="tabpanel" aria-labelledby="tab-chat"
+         style="display:none; position:fixed; top:130px; left:0; right:0; bottom:65px; flex-direction:column; background:#fbf9f9;">
+
+      <!-- ── Groq Status Bar ── -->
+      <div id="groq-status-bar" style="display:flex; align-items:center; justify-content:center; gap:6px; padding:6px 20px; border-bottom:1px solid #e4e2e2; background:#fbf9f9; flex-shrink:0;">
+        <span id="groq-status-dot" style="width:7px; height:7px; border-radius:50%; background:#c4c7c7; display:inline-block; flex-shrink:0;"></span>
+        <span id="groq-status-text" style="font-family:'Hanken Grotesk',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#747878;">Checking connection…</span>
       </div>
 
-      <!-- History list -->
-      <div id="history-list" role="list">
-        <!-- Populated by coach.js -->
+      <!-- Message list -->
+      <div id="chat-messages"
+           class="no-scrollbar"
+           style="flex:1; overflow-y:auto; padding:16px 20px 16px 20px; display:flex; flex-direction:column; gap:16px;">
+
+        <!-- Welcome message (shown when no chat history) -->
+        <div id="chat-welcome" class="flex flex-col items-center justify-center h-full text-center py-12 gap-4">
+          <div class="w-14 h-14 rounded-full bg-ink-black flex items-center justify-center ai-badge">
+            <span class="material-symbols-outlined text-paper-white" style="font-variation-settings:'FILL' 1;">psychology</span>
+          </div>
+          <div>
+            <p class="font-headline-sm text-headline-sm text-ink-black mb-1">Talk to your Coach</p>
+            <p class="font-body-md text-body-md text-secondary max-w-xs mx-auto">
+              Share what's on your mind. I have context from your logs and I'll give you honest, specific feedback — not generic advice.
+            </p>
+          </div>
+          <!-- Starter prompts -->
+          <div class="flex flex-col gap-2 w-full max-w-xs mt-2" id="starter-prompts">
+            <button class="starter-prompt" onclick="sendStarterPrompt(this)">I'm not sure if my habits are actually helping</button>
+            <button class="starter-prompt" onclick="sendStarterPrompt(this)">I feel like I'm making progress but can't see it</button>
+            <button class="starter-prompt" onclick="sendStarterPrompt(this)">I keep losing consistency — why?</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Empty history state -->
-      <div id="history-empty" class="hidden empty-state py-10">
-        <span class="material-symbols-outlined text-[36px] text-outline-variant block mx-auto mb-3">history</span>
-        <p class="text-secondary font-body-md">Your insight history will build with each log entry.</p>
+
+      <!-- Typing indicator (hidden by default) -->
+      <div id="typing-indicator" class="hidden" style="padding:0 20px 6px 20px;">
+        <div class="chat-bubble-coach" style="width:fit-content; padding: 12px 16px;">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
       </div>
-    </section>
+
+      <!-- Input bar — sits naturally at the bottom of the flex column -->
+      <div style="padding:10px 20px 12px 20px; border-top:1px solid #e4e2e2; background:#fbf9f9; flex-shrink:0;">
+        <div style="display:flex; align-items:flex-end; gap:12px;">
+          <textarea
+            id="chat-input"
+            placeholder="What's on your mind?"
+            rows="1"
+            maxlength="500"
+            class="chat-textarea"
+            aria-label="Message to coach"
+            onkeydown="handleChatKey(event)"
+            oninput="autoResizeTextarea(this)"
+          ></textarea>
+          <button
+            id="chat-send-btn"
+            onclick="sendChatMessage()"
+            aria-label="Send message"
+            class="chat-send-btn"
+          >
+            <span class="material-symbols-outlined" style="font-size:20px; font-variation-settings:'FILL' 1;">send</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
   </main>
+
 
   <!-- ══════════════════════════════════════════
        BOTTOM NAV BAR
@@ -204,5 +295,6 @@
   <!-- Scripts -->
   <script src="app.js"></script>
   <script src="coach.js"></script>
+  <script src="chat.js"></script>
 </body>
 </html>
