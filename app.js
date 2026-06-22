@@ -1,21 +1,21 @@
 /* ============================================================
-   MindLog — Shared Application Logic (app.js)
+   MindLog â€” Shared Application Logic (app.js)
    Handles: localStorage CRUD, Groq API stub, nav helpers, toast
    ============================================================ */
 
 'use strict';
 
-// ──────────────────────────────────────────────────────────────
-//  CONFIG — Drop your Groq API key here when ready
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+//  CONFIG â€” Drop your Groq API key here when ready
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const MINDLOG_CONFIG = {
   GROQ_MODEL:   'llama-3.3-70b-versatile',
   WORKER_URL:   'https://raspy-leaf-d3bf.vedivinod2006.workers.dev/', // replaces GROQ_API_URL
   STORAGE_KEY:  'mindlog_entries',
 };
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 //  localStorage Helpers
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Returns all stored entries, sorted newest first.
@@ -54,9 +54,9 @@ function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
 
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 //  Date Formatting
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Returns a human-readable date string (e.g., "June 17, 2026")
@@ -87,14 +87,14 @@ function todayStr() {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 //  Mode Helpers
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const MODE_META = {
-  win:        { label: 'Win',        icon: 'verified',     emoji: '✅' },
-  unsure:     { label: 'Unsure',     icon: 'help_outline', emoji: '❓' },
-  struggling: { label: 'Struggling', icon: 'warning',      emoji: '😔' },
+  win:        { label: 'Win',        icon: 'verified',     emoji: 'âœ…' },
+  unsure:     { label: 'Unsure',     icon: 'help_outline', emoji: 'â“' },
+  struggling: { label: 'Struggling', icon: 'warning',      emoji: 'ðŸ˜”' },
 };
 
 /**
@@ -106,9 +106,9 @@ function getModeInfo(mode) {
   return MODE_META[mode] || MODE_META['unsure'];
 }
 
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 //  Groq API / AI Coach
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Builds the user message string sent to the AI from entry data + history.
@@ -140,8 +140,8 @@ function buildCoachPrompt(entry, history) {
  * @returns {Promise<string>}
  */
 async function callGroqCoach(entry, history) {
-  // ── LIVE CALL VIA WORKER (key lives server-side, not here) ───
-  const systemPrompt = `You are a direct, honest AI mental health coach. Your role is to help users see patterns in their own emotional data that they cannot see themselves. You do NOT give generic wellness advice. You reference specific data from this user's log history but dont say it directly or obviously to the user. you just keep it in your mind while typing out the response. You speak in plain, warm language — not clinical, not fluffy. You are honest even when the truth is uncomfortable, but always with care. Your response is a few words maximum and should always be valid to their context. Be sharp and specific.You write statements. You dont ask the user anything`;
+  // â”€â”€ LIVE CALL VIA WORKER (key lives server-side, not here) â”€â”€â”€
+  const systemPrompt = `You are a direct, honest AI mental health coach. Your role is to help users see patterns in their own emotional data that they cannot see themselves. You do NOT give generic wellness advice. You reference specific data from this user's log history but dont say it directly or obviously to the user. you just keep it in your mind while typing out the response. You speak in plain, warm language â€” not clinical, not fluffy. You are honest even when the truth is uncomfortable, but always with care. Your response is a few words maximum and should always be valid to their context. Be sharp and specific.You write statements. You dont ask the user anything`;
 
   try {
     const res = await fetch(MINDLOG_CONFIG.WORKER_URL, {
@@ -183,16 +183,16 @@ function getPlaceholderResponse(entry, history) {
 
   const responses = {
     win: [
-      `You logged a win today with mood at ${entry.mood}/10 — that's a real data point, not just a feeling. ${avgMood ? `Your recent average has been around ${avgMood}/10, so today you're tracking above baseline.` : 'This is your first entry, so you\'re building the baseline now.'} The fact that you noticed and named something you're proud of is the skill itself. What made today's win feel different from a typical day?`,
-      `A mood of ${entry.mood}/10 paired with energy at ${entry.energy}/10 — that's a coherent state, not scattered. ${hasHistory ? 'Looking at your recent logs, wins tend to appear when your energy holds steady.' : 'Keep logging; the patterns will become visible quickly.'} The act of naming a win rewires how your brain scans for positive events. What's one thing you did today that you want to repeat tomorrow?`,
+      `You logged a win today with mood at ${entry.mood}/10 â€” that's a real data point, not just a feeling. ${avgMood ? `Your recent average has been around ${avgMood}/10, so today you're tracking above baseline.` : 'This is your first entry, so you\'re building the baseline now.'} The fact that you noticed and named something you're proud of is the skill itself. What made today's win feel different from a typical day?`,
+      `A mood of ${entry.mood}/10 paired with energy at ${entry.energy}/10 â€” that's a coherent state, not scattered. ${hasHistory ? 'Looking at your recent logs, wins tend to appear when your energy holds steady.' : 'Keep logging; the patterns will become visible quickly.'} The act of naming a win rewires how your brain scans for positive events. What's one thing you did today that you want to repeat tomorrow?`,
     ],
     unsure: [
-      `You're unsure, but you still showed up — that distinction matters more than it feels like right now. With mood at ${entry.mood}/10, your system isn't in freefall; it's in a holding pattern. ${hasHistory ? `Your logs suggest these doubt periods tend to be short — usually 1-2 days.` : 'Uncertainty is actually a sign you\'re tracking reality accurately, not catastrophising.'} What would "slightly clearer" look like for you tomorrow — even just one thing?`,
-      `An "unsure" log with energy at ${entry.energy}/10 often means your body knows something before your mind catches up. ${avgMood ? `Your average mood recently has been ${avgMood}/10, which means you have context — this probably isn\'t a trend shift, just a wobble.` : 'This is useful baseline data.'} Doubt at this stage of a growth journey is almost always signal, not noise. What's the smallest version of the thing you're unsure about that you could test tomorrow?`,
+      `You're unsure, but you still showed up â€” that distinction matters more than it feels like right now. With mood at ${entry.mood}/10, your system isn't in freefall; it's in a holding pattern. ${hasHistory ? `Your logs suggest these doubt periods tend to be short â€” usually 1-2 days.` : 'Uncertainty is actually a sign you\'re tracking reality accurately, not catastrophising.'} What would "slightly clearer" look like for you tomorrow â€” even just one thing?`,
+      `An "unsure" log with energy at ${entry.energy}/10 often means your body knows something before your mind catches up. ${avgMood ? `Your average mood recently has been ${avgMood}/10, which means you have context â€” this probably isn\'t a trend shift, just a wobble.` : 'This is useful baseline data.'} Doubt at this stage of a growth journey is almost always signal, not noise. What's the smallest version of the thing you're unsure about that you could test tomorrow?`,
     ],
     struggling: [
-      `A hard day logged is still a day accounted for — and that consistency is what the data will thank you for later. Energy at ${entry.energy}/10 tells me your system is running low, not broken. ${avgMood ? `Your baseline mood of ${avgMood}/10 shows this is a dip, not your new normal.` : 'Even without history, naming the struggle clearly is the first move toward it.'} What's one small thing — absurdly small — that you could protect for yourself tonight?`,
-      `Struggling with mood at ${entry.mood}/10 — I hear that. ${hasHistory ? 'Your recent logs show you\'ve navigated dips before and come out with clearer entries afterward.' : 'Starting the log habit on a hard day actually tells me a lot about your commitment.'} The fact that you opened this app and logged today means part of you is still steering. What does your body need most in the next two hours?`,
+      `A hard day logged is still a day accounted for â€” and that consistency is what the data will thank you for later. Energy at ${entry.energy}/10 tells me your system is running low, not broken. ${avgMood ? `Your baseline mood of ${avgMood}/10 shows this is a dip, not your new normal.` : 'Even without history, naming the struggle clearly is the first move toward it.'} What's one small thing â€” absurdly small â€” that you could protect for yourself tonight?`,
+      `Struggling with mood at ${entry.mood}/10 â€” I hear that. ${hasHistory ? 'Your recent logs show you\'ve navigated dips before and come out with clearer entries afterward.' : 'Starting the log habit on a hard day actually tells me a lot about your commitment.'} The fact that you opened this app and logged today means part of you is still steering. What does your body need most in the next two hours?`,
     ],
   };
 
@@ -200,9 +200,9 @@ function getPlaceholderResponse(entry, history) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 //  Toast Notification
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Shows a brief toast notification at the bottom of the screen.
@@ -222,9 +222,9 @@ function showToast(message, duration = 2500) {
   setTimeout(() => toast.classList.remove('show'), duration);
 }
 
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 //  Navigation Active State
-// ──────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Marks the correct bottom nav item as active based on current page filename.
