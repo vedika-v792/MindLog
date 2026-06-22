@@ -13,7 +13,6 @@ const MINDLOG_CONFIG = {
   WORKER_URL:   'https://raspy-leaf-d3bf.vedivinod2006.workers.dev/', // replaces GROQ_API_URL
   STORAGE_KEY:  'mindlog_entries',
 };
-
 // ──────────────────────────────────────────────────────────────
 //  localStorage Helpers
 // ──────────────────────────────────────────────────────────────
@@ -168,54 +167,7 @@ async function callGroqCoach(entry, history) {
     console.error('[MindLog] Groq API call failed:', err);
     return getPlaceholderResponse(entry, history);
   }
-}/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run "npm run dev" in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run "npm run deploy" to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
-export default {
-  async fetch(request, env) {
-    // Allow requests only from your GitHub Pages site
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": "https://vedika-v792.github.io",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    };
-
-    if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
-    }
-
-    let body;
-try {
-  body = await request.json();
-} catch (err) {
-  return new Response(JSON.stringify({ error: " missing JSON body" }), {
-    status: 400,
-    headers: { "Content-Type": "application/json" },
-  });
 }
-
-    const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${env.GROQ_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-
-    const data = await groqResponse.json();
-
-    return new Response(JSON.stringify(data), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  },
-};
 
 /**
  * Returns a context-aware placeholder coach response based on mode + scores.
