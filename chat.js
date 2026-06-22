@@ -241,30 +241,19 @@ function sendStarterPrompt(btn) {
 //  Groq Chat API Call (multi-turn with history)
 // ──────────────────────────────────────────────────────────────
 async function callGroqChat(userMessage) {
-  // Detect file:// protocol
-  if (window.location.protocol === 'file:') {
-    showApiError('⚠️ Chat AI needs a local server. Double-click start-server.bat then open http://localhost:8080');
-    return getChatFallback(userMessage);
-  }
-
-  if (!MINDLOG_CONFIG.GROQ_API_KEY) {
-    return getChatFallback(userMessage);
-  }
-
-  // Build message array: system + last 10 exchanges + new user message
+  // Build message array: system + last 20 messages for context
   const stored = getChatHistory();
-  const recent = stored.slice(-20); // last 20 messages for context window
+  const recent = stored.slice(-20);
 
   const messages = [
     { role: 'system', content: buildChatSystemPrompt() },
     ...recent.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content })),
   ];
 
-  const res = await fetch(MINDLOG_CONFIG.GROQ_API_URL, {
+  const res = await fetch(MINDLOG_CONFIG.WORKER_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${MINDLOG_CONFIG.GROQ_API_KEY}`,
     },
     body: JSON.stringify({
       model: MINDLOG_CONFIG.GROQ_MODEL,
@@ -372,13 +361,14 @@ function getChatFallback(userMessage) {
 
   // ── Default — varied, never the same twice ──
   return pick([
-   // `That's worth sitting with. What's the part of this that bothers you the most — the feeling itself, or not knowing why you're feeling it?`,
-    `This is a generic response.`,
-    //`That's a real thing to be carrying. How long has this been sitting with you?`,
-    //`I hear that. What would you want to be different — and what's actually in your control to change?`,
-    //`What does that feel like in your body right now — is it tension, heaviness, numbness, something else?`,
-   // `If a close friend told you they were feeling exactly this, what would you say to them?`,
+    `That's worth sitting with. What's the part of this that bothers you the most — the feeling itself, or not knowing why you're feeling it?`,
+    `Say more. What's underneath that?`,
+    `That's a real thing to be carrying. How long has this been sitting with you?`,
+    `I hear that. What would you want to be different — and what's actually in your control to change?`,
+    `What does that feel like in your body right now — is it tension, heaviness, numbness, something else?`,
+    `If a close friend told you they were feeling exactly this, what would you say to them?`,
   ]);
+
 }
 
 
